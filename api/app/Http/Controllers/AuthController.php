@@ -37,7 +37,7 @@ class AuthController extends Controller {
         
         $login = $this->authService->login($request->email, $request->password);
 
-        return $this->success($login->toArray());
+        return $this->responseSuccess($login->toArray());
     }
 
     /**
@@ -50,6 +50,6 @@ class AuthController extends Controller {
         $user = $request->user();
         $user->currentAccessToken()->delete();
 
-        return $this->success();
+        return $this->responseSuccess();
     }
 }

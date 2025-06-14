@@ -40,7 +40,7 @@ class PositionController extends Controller
         $positions = $this->positionService->getAll(perPage: $perPage, search: $search);
         $dto = PositionResource::collection($positions);
         
-        return $this->success($dto, paginator: $positions);
+        return $this->responseSuccess($dto, paginator: $positions);
     }
 
     /**
@@ -54,7 +54,7 @@ class PositionController extends Controller
         $newPosition = $this->positionService->create($data);
         $dto = PositionResource::make($newPosition);
 
-        return $this->created($dto);
+        return $this->responseCreated($dto);
     }
 
     /**
@@ -68,9 +68,9 @@ class PositionController extends Controller
             $position = $this->positionService->getById($id);
             $dto = PositionResource::make($position);
             
-            return $this->success($dto);
+            return $this->responseSuccess($dto);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
-            return $this->notFound();
+            return $this->responseNotFound();
         }
     }
 
@@ -87,9 +87,9 @@ class PositionController extends Controller
             $updatePosition = $this->positionService->updateById($data, $id);
             $dto = PositionResource::make($updatePosition);
 
-            return $this->updated($dto);
+            return $this->responseupdated($dto);
        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $th) {
-            return $this->notFound();
+            return $this->responseNotFound();
        }
     }
 
@@ -103,9 +103,9 @@ class PositionController extends Controller
         try {
             $this->positionService->deleteById($id);
             
-            return $this->deleted();
+            return $this->responsedeleted();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
-            return $this->notFound();
+            return $this->responseNotFound();
         }
     }
 }
