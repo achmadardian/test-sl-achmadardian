@@ -8,7 +8,7 @@ use Illuminate\Pagination\Paginator;
 
 trait ApiResponse {
 
-    protected function success(mixed $data = null, ?string $message = null, ?Paginator $paginator = null): JsonResponse
+    protected function responseSuccess(mixed $data = null, ?string $message = null, ?Paginator $paginator = null): JsonResponse
     {
         $response = [
             'code' => Response::HTTP_OK,
@@ -28,7 +28,7 @@ trait ApiResponse {
         return response()->json($response, Response::HTTP_OK);
     }
 
-    protected function created(mixed $data = null, ?string $message = null): JsonResponse
+    protected function responseCreated(mixed $data = null, ?string $message = null): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_CREATED,
@@ -37,7 +37,7 @@ trait ApiResponse {
         ], Response::HTTP_CREATED);
     }
 
-    protected function updated(mixed $data = null, ?string $message = null): JsonResponse
+    protected function responseUpdated(mixed $data = null, ?string $message = null): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_OK,
@@ -46,7 +46,7 @@ trait ApiResponse {
         ], Response::HTTP_OK);
     }
 
-    protected function deleted(?string $message = null): JsonResponse
+    protected function responseDeleted(?string $message = null): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_OK,
@@ -54,7 +54,7 @@ trait ApiResponse {
         ], Response::HTTP_OK);
     }
 
-    protected function notFound(?string $message = null): JsonResponse
+    protected function responseNotFound(?string $message = null): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_NOT_FOUND,
@@ -62,7 +62,7 @@ trait ApiResponse {
         ], Response::HTTP_NOT_FOUND);
     }
 
-    protected function unauthorized(?string $message = null): JsonResponse
+    protected function responseUnauthorized(?string $message = null): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_UNAUTHORIZED,
@@ -70,7 +70,7 @@ trait ApiResponse {
         ], Response::HTTP_UNAUTHORIZED);
     }
 
-    protected function internalServerError(): JsonResponse
+    protected function responseInternalServerError(): JsonResponse
     {
         return response()->json([
             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
