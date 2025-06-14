@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Position;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,20 @@ class DatabaseSeeder extends Seeder
             'email' => env('ADMIN_EMAIL'),
             'password' => Hash::make(env('ADMIN_PASSWORD')),
         ]);
+
+        $positions = [
+            'Manager',
+            'Backend Developer',
+            'Frontend Developer',
+            'Accountant',
+            'Security',
+            'Marketing'
+        ];
+
+        foreach ($positions as $position) {
+            Position::create([
+                'name' => $position,
+            ]);
+        }
     }
 }
