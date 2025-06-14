@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,4 +12,7 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:
 Route::middleware('auth:sanctum')->group(function() {
     // positions
     Route::apiResource('positions', PositionController::class);
+
+    // employees
+    Route::apiResource('employees', EmployeeController::class);
 });
