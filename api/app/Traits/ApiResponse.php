@@ -4,21 +4,34 @@ namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\Paginator;
 
 trait ApiResponse {
 
-    protected function success(mixed $data = null, ?string $message = null): JsonResponse
+    protected function success(mixed $data = null, ?string $message = null, ?Paginator $paginator = null): JsonResponse
     {
-        return response()->json([
+        $response = [
             'code' => Response::HTTP_OK,
             'message' => $message ?? "ok",
             'data' => $data,
-        ], Response::HTTP_OK);
+        ];
+
+        if ($paginator) {
+            $response['pagination'] = [
+                'current_page' => $paginator->currentPage(),
+                'next_page_url' => $paginator->nextPageUrl(),
+                'prev_page_url' => $paginator->previousPageUrl(),
+                'has_more_pages' => $paginator->hasMorePages()
+            ];
+        }
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     protected function created(mixed $data = null, ?string $message = null): JsonResponse
     {
         return response()->json([
+            'code' => Response::HTTP_CREATED,
             'message' => $message ?? "created",
             'data' => $data,
         ], Response::HTTP_CREATED);
@@ -27,6 +40,7 @@ trait ApiResponse {
     protected function updated(mixed $data = null, ?string $message = null): JsonResponse
     {
         return response()->json([
+            'code' => Response::HTTP_OK,
             'message' => $message ?? "updated",
             'data' => $data,
         ], Response::HTTP_OK);
@@ -35,6 +49,7 @@ trait ApiResponse {
     protected function deleted(?string $message = null): JsonResponse
     {
         return response()->json([
+            'code' => Response::HTTP_OK,
             'message' => $message ?? "deleted",
         ], Response::HTTP_OK);
     }
@@ -42,6 +57,7 @@ trait ApiResponse {
     protected function notFound(?string $message = null): JsonResponse
     {
         return response()->json([
+            'code' => Response::HTTP_NOT_FOUND,
             'message' => $message ?? "not found",
         ], Response::HTTP_NOT_FOUND);
     }
@@ -49,7 +65,16 @@ trait ApiResponse {
     protected function unauthorized(?string $message = null): JsonResponse
     {
         return response()->json([
+            'code' => Response::HTTP_UNAUTHORIZED,
             'message' => $message ?? "not found",
         ], Response::HTTP_UNAUTHORIZED);
+    }
+
+    protected function internalServerError(): JsonResponse
+    {
+        return response()->json([
+            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => "internal server error",
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
