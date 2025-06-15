@@ -5,13 +5,10 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const route = (dest: string) => {
-  router.push(dest)
-}
-
 const email = ref<string>('')
 const password = ref<string>('')
 const errMessage = ref<string>('')
+const errValidation = ref<{ [key: string]: string[] }>({})
 
 const login = async (email: string, password: string) => {
   try {
@@ -27,10 +24,18 @@ const login = async (email: string, password: string) => {
 
     console.info(response.data)
 
-    route('/home')
+    router.push('/home')
   } catch (error: any) {
-    if (error.response && error.response.status == 401) {
-      errMessage.value = error.response.data.message
+    if (error.response) {
+      const status = error.response.status
+
+      if (status === 401) {
+        errMessage.value = error.response.data.message
+      } else if (status === 422) {
+        errValidation.value = error.response.data.errors
+      } else {
+        errMessage.value = 'Something went wrong...'
+      }
     } else {
       errMessage.value = 'Something went wrong...'
     }
@@ -63,6 +68,9 @@ const login = async (email: string, password: string) => {
           v-model="email"
           required
         />
+        <ul v-if="errValidation.email" class="text-red-500 text-sm mt-1 list-disc pl-5">
+          <li v-for="(msg, index) in errValidation.email" :key="index">{{ msg }}</li>
+        </ul>
       </fieldset>
       <fieldset class="flex flex-col">
         <legend class="text-sm pb-3">Password</legend>
