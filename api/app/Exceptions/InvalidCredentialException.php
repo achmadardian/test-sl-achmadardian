@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use App\Traits\ApiResponse;
 
 class InvalidCredentialException extends Exception
@@ -13,6 +12,6 @@ class InvalidCredentialException extends Exception
 
     public function render(): JsonResponse
     {
-        return $this->unauthorized('wrong email or password');
+        return $this->responseUnauthorized('wrong email or password');
     }
 }
